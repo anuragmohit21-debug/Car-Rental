@@ -1,17 +1,30 @@
 import { assets } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
 
 const CarCard = ({ car }) => {
-
   const currency = import.meta.env.VITE_CURRENCY
   const navigate = useNavigate()
 
+  const {
+    wishlist,
+    toggleWishlist,
+    token,
+  } = useAppContext()
+
+  const isWishlisted = wishlist.some(
+    (item) => item._id === car._id
+  )
+
   return (
-    <div onClick={()=>{navigate(`/car-details/${car._id}`); scrollTo(0,0)}}
-    className='group rounded-xl overflow-hidden shadow-lg hover:-translate-y-1 transition-all duration-500 cursor-pointer'>
-
+    <div
+      onClick={() => {
+        navigate(`/car-details/${car._id}`)
+        scrollTo(0, 0)
+      }}
+      className='group rounded-xl overflow-hidden shadow-lg hover:-translate-y-1 transition-all duration-500 cursor-pointer'
+    >
       <div className='relative h-52 overflow-hidden'>
-
         <img
           src={car.image}
           alt='Car Image'
@@ -24,20 +37,42 @@ const CarCard = ({ car }) => {
           </p>
         )}
 
+        {/* Wishlist Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+
+            if (!token) return
+
+            toggleWishlist(car._id)
+          }}
+          className='absolute top-4 right-4 bg-white p-2 rounded-full shadow-md'
+        >
+          <span
+            className={`text-xl ${
+              isWishlisted
+                ? 'text-red-500'
+                : 'text-gray-400'
+            }`}
+          >
+            ♥
+          </span>
+        </button>
+
         <div className='absolute bottom-4 right-4 bg-black/80 backdrop-blur-sm text-white px-3 py-2 rounded-lg'>
           <span className='font-semibold'>
-            {currency}{car.pricePerDay}
+            {currency}
+            {car.pricePerDay}
           </span>
 
           <span className='text-sm text-white/80'>
-            {' '} / day
+            {' '}
+            / day
           </span>
         </div>
-
       </div>
 
       <div className='p-4 sm:p-5'>
-
         <div className='flex justify-between items-start mb-2'>
           <div>
             <h3 className='text-lg font-medium'>
@@ -51,7 +86,6 @@ const CarCard = ({ car }) => {
         </div>
 
         <div className='mt-4 grid grid-cols-2 gap-y-2 text-gray-600'>
-
           <div className='flex items-center text-sm'>
             <img
               src={assets.users_icon}
@@ -87,11 +121,8 @@ const CarCard = ({ car }) => {
             />
             <span>{car.location}</span>
           </div>
-
         </div>
-
       </div>
-
     </div>
   )
 }

@@ -7,7 +7,15 @@ import { motion } from 'motion/react'
 
 const Navbar = () => {
 
-  const {setShowLogin,user,logout,isOwner,axios,setIsOwner} =
+  const {
+  setShowLogin,
+  user,
+  logout,
+  isOwner,
+  axios,
+  setIsOwner,
+  wishlist,
+} = useAppContext()
   useAppContext()
   
   
@@ -85,7 +93,18 @@ const Navbar = () => {
         </div>
 
         <div className='flex max-sm:flex-col items-start sm:items-center gap-6'>
+          <Link
+  to='/wishlist'
+  className='relative cursor-pointer'
+>
+  ❤️ Wishlist
 
+  {wishlist.length > 0 && (
+    <span className='absolute -top-2 -right-5 bg-red-500 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center'>
+      {wishlist.length}
+    </span>
+  )}
+</Link>
           <button
             onClick={() =>isOwner ? navigate('/owner') : changeRole()}
             className='cursor-pointer'

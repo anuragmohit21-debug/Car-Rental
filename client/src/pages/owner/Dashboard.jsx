@@ -2,6 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { assets, dummyDashboardData } from '../../assets/assets'
 import Title from '../../components/owner/Title'
 import { useAppContext } from '../../context/AppContext'
+import { toast } from 'react-hot-toast'
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+} from 'recharts'
 
 const Dashboard = () => {
 
@@ -15,8 +27,29 @@ const Dashboard = () => {
     recentBookings: [],
     monthlyRevenue: 0,
   })
+  const bookingChartData = [
+  {
+    name: 'Pending',
+    value: data.pendingBookings,
+  },
+  {
+    name: 'Confirmed',
+    value: data.completedBookings,
+  },
+]
+
+const revenueChartData = [
+  {
+    name: 'Revenue',
+    amount: data.monthlyRevenue,
+  },
+]
+
+const COLORS = ['#f59e0b', '#10b981']
 
   const dashboardCards = [
+    
+    
     {
       title: "Total Cars",
       value: data.totalCars,
@@ -184,6 +217,53 @@ useEffect(() => {
           </p>
 
         </div>
+
+        <div className="grid md:grid-cols-2 gap-6 w-full">
+
+  {/* Booking Status Chart */}
+  <div className="p-4 md:p-6 border border-borderColor rounded-md">
+    <h1 className="text-lg font-medium mb-4">
+      Booking Status
+    </h1>
+
+    <ResponsiveContainer width="100%" height={250}>
+      <PieChart>
+        <Pie
+          data={bookingChartData}
+          dataKey="value"
+          nameKey="name"
+          outerRadius={80}
+          label
+        >
+          {bookingChartData.map((entry, index) => (
+            <Cell
+              key={index}
+              fill={COLORS[index % COLORS.length]}
+            />
+          ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+    </ResponsiveContainer>
+  </div>
+
+  {/* Revenue Chart */}
+  <div className="p-4 md:p-6 border border-borderColor rounded-md">
+    <h1 className="text-lg font-medium mb-4">
+      Revenue Analytics
+    </h1>
+
+    <ResponsiveContainer width="100%" height={250}>
+      <BarChart data={revenueChartData}>
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Bar dataKey="amount" fill="#3b82f6" />
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
+
+</div>
 
       </div>
 

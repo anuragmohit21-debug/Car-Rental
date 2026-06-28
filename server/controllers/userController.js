@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Car from "../models/Car.js"; // 👈 ye import zaroor add karo
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateToken = (userId) => {
   return jwt.sign(userId, process.env.JWT_SECRET);
@@ -107,7 +108,7 @@ export const getUserData = async (req, res) => {
   }
 };
 
-// Get All Cars for the Frontant
+  // Get All Cars for the Frontend
 export const getCars = async (req, res) => {
   try {
     const cars = await Car.find({
@@ -117,6 +118,62 @@ export const getCars = async (req, res) => {
     res.json({
       success: true,
       cars,
+    });
+  } catch (error) {
+    console.log(error.message);
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Toggle Wishlist
+export const toggleWishlist = async (req, res) => {
+  try {
+    const { carId } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+
+    const exists = user.wishlist.some(
+      (item) => item.toString() === carId
+    );
+
+    if (exists) {
+      user.wishlist = user.wishlist.filter(
+        (item) => item.toString() !== carId
+      );
+    } else {
+      user.wishlist.push(carId);
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      wishlist: user.wishlist,
+    });
+  } catch (error) {
+    console.log(error.message);
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get Wishlist
+export const getWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+      .populate("wishlist");
+
+    res.json({
+      success: true,
+      wishlist: user.wishlist,
     });
   } catch (error) {
     console.log(error.message);

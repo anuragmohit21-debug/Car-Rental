@@ -11,24 +11,30 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
+
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const currency = import.meta.env.VITE_CURRENCY;
 
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [token, setToken] = useState(
+    () => localStorage.getItem("token")
+  );
   const [user, setUser] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [cars, setCars] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   // Fetch Cars
   const fetchCars = useCallback(async () => {
     try {
-      const { data } = await axios.get("/api/user/cars");
+      const { data } = await axios.get(
+        "/api/user/cars"
+      );
 
       if (data.success) {
         setCars(data.cars);
@@ -40,14 +46,52 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
+  // Fetch Wishlist
+  const fetchWishlist = async () => {
+    try {
+      const { data } = await axios.get(
+        "/api/user/wishlist"
+      );
+
+      if (data.success) {
+        setWishlist(data.wishlist);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Toggle Wishlist
+  const toggleWishlist = async (carId) => {
+    try {
+      const { data } = await axios.post(
+        "/api/user/wishlist",
+        {
+          carId,
+        }
+      );
+
+      if (data.success) {
+        await fetchWishlist();
+        toast.success("Wishlist Updated");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   // Fetch User
   const fetchUser = useCallback(async () => {
     try {
-      const { data } = await axios.get("/api/user/data");
+      const { data } = await axios.get(
+        "/api/user/data"
+      );
 
       if (data.success) {
         setUser(data.user);
-        setIsOwner(data.user.role === "owner");
+        setIsOwner(
+          data.user.role === "owner"
+        );
       } else {
         navigate("/");
       }
@@ -62,24 +106,31 @@ export const AppProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     setIsOwner(false);
-    axios.defaults.headers.common["Authorization"] = "";
-    toast.success("You have been logged out");
+    setWishlist([]);
+
+    delete axios.defaults.headers.common[
+      "Authorization"
+    ];
+
+    toast.success(
+      "You have been logged out"
+    );
   };
 
   useEffect(() => {
     fetchCars();
   }, [fetchCars]);
 
-  // Fetch user when token changes
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common[
         "Authorization"
-      ] = `${token}`;
+      ] = token;
 
       fetchUser();
+      fetchWishlist();
     }
-  }, [fetchUser, token]);
+  }, [token, fetchUser]);
 
   const value = {
     navigate,
@@ -102,6 +153,10 @@ export const AppProvider = ({ children }) => {
     setPickupDate,
     returnDate,
     setReturnDate,
+    wishlist,
+    setWishlist,
+    fetchWishlist,
+    toggleWishlist,
   };
 
   return (

@@ -11,22 +11,28 @@ const CarDetails = () => {
   const {cars, axios, pickupDate, setPickupDate, returnDate, setReturnDate} = useAppContext()
   const navigate = useNavigate()
   const [car,setCar] = useState(null)
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
   
   const currency = import.meta.env.VITE_CURRENCY
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const { data } = await axios.post('/api/bookings/create', {
-      car: id,
-      pickupDate,
-      returnDate,
-    });
+    const { data } = await axios.post(
+      "/api/bookings/create",
+      {
+        car: id,
+        pickupDate,
+        returnDate,
+      }
+    );
 
     if (data.success) {
       toast.success(data.message);
-      navigate('/my-bookings');
+      navigate("/my-bookings");
     } else {
       toast.error(data.message);
     }
@@ -35,9 +41,61 @@ const CarDetails = () => {
   }
 };
 
-  useEffect(()=>{
-    setCar(cars.find(car => car._id === id) )
-  }, [cars, id])
+const fetchReviews = async () => {
+  try {
+    const { data } = await axios.get(
+      `/api/reviews/${id}`
+    );
+
+    if (data.success) {
+      setReviews(data.reviews);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const addReview = async () => {
+  try {
+    const { data } = await axios.post(
+      "/api/reviews",
+      {
+        carId: id,
+        rating,
+        comment,
+      }
+    );
+
+    if (data.success) {
+  toast.success("Review Added");
+  setComment("");
+  fetchReviews();
+
+  const updatedCars = await axios.get("/api/user/cars");
+
+  if (updatedCars.data.success) {
+    const updatedCar = updatedCars.data.cars.find(
+      (item) => item._id === id
+    );
+
+    setCar(updatedCar);
+  }
+}
+     else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+  useEffect(() => {
+  setCar(
+    cars.find((car) => car._id === id)
+  );
+
+  fetchReviews();
+}, [cars, id]);
 
   return car ? (
     <div className='px-6 md:px-16 lg:px-24 xl:px-32 mt-16'>
@@ -94,6 +152,10 @@ const CarDetails = () => {
               <p className='text-gray-500 text-lg'>
                 {car.category} • {car.year}
               </p>
+              <p className="text-yellow-500 mt-2">
+  ⭐            {car.rating?.toFixed(1)} (
+                {car.totalReviews} Reviews)
+              </p>
             </div>
 
             <hr className='border-borderColor my-6' />
@@ -149,33 +211,75 @@ const CarDetails = () => {
             </div>
 
             {/* Features */}
-            <div>
-              <h1 className='text-xl font-medium mb-3'>
-                Features
-              </h1>
+            {/* Customer Reviews */}
+<div className='mt-8'>
+  <h1 className='text-xl font-medium mb-4'>
+    Customer Reviews
+  </h1>
 
-              <ul className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
-                {[
-                  "360 Camera",
-                  "Bluetooth",
-                  "GPS",
-                  "Heated Seats",
-                  "Rear View Mirror"
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className='flex items-center text-gray-500'
-                  >
-                    <img
-                      src={assets.check_icon}
-                      className='h-4 mr-2'
-                      alt=""
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+  {/* Add Review */}
+  <div className='flex flex-col gap-3 mb-6'>
+    <select
+      value={rating}
+      onChange={(e) =>
+        setRating(Number(e.target.value))
+      }
+      className='border border-borderColor p-3 rounded-lg'
+    >
+      <option value={5}>⭐⭐⭐⭐⭐</option>
+      <option value={4}>⭐⭐⭐⭐</option>
+      <option value={3}>⭐⭐⭐</option>
+      <option value={2}>⭐⭐</option>
+      <option value={1}>⭐</option>
+    </select>
+
+    <textarea
+      value={comment}
+      onChange={(e) =>
+        setComment(e.target.value)
+      }
+      placeholder='Write your review...'
+      rows='3'
+      className='border border-borderColor p-3 rounded-lg'
+    />
+
+    <button
+      type='button'
+      onClick={addReview}
+      className='bg-primary text-white py-3 rounded-lg'
+    >
+      Submit Review
+    </button>
+  </div>
+
+  {/* Reviews List */}
+  <div className='space-y-4'>
+    {reviews.length === 0 ? (
+      <p className='text-gray-500'>
+        No reviews yet.
+      </p>
+    ) : (
+      reviews.map((review) => (
+        <div
+          key={review._id}
+          className='border border-borderColor rounded-lg p-4'
+        >
+          <h2 className='font-semibold'>
+            {review.user?.name}
+          </h2>
+
+          <p className='text-yellow-500'>
+            {"⭐".repeat(review.rating)}
+          </p>
+
+          <p className='text-gray-600 mt-2'>
+            {review.comment}
+          </p>
+        </div>
+      ))
+    )}
+  </div>
+</div>
 
           </motion.div>
         </motion.div>

@@ -1,6 +1,8 @@
 import Booking from "../models/Booking.js";
 import Car from "../models/Car.js";
-
+import { sendBookingEmail } from "../utils/emailService.js";
+import User from "../models/User.js";
+import { generateInvoice } from "../utils/invoiceService.js";
 // Function to Check Availability of Car for a given Date
 const checkAvailability = async (car, pickupDate, returnDate) => {
   const bookings = await Booking.find({
@@ -86,10 +88,20 @@ export const createBooking = async (req, res) => {
       price,
     });
 
+    await sendBookingEmail(
+      req.user.email,
+      `${carData.brand} ${carData.model}`,
+      pickupDate,
+      returnDate,
+      price
+    );
+
+
     res.json({
       success: true,
       message: "Booking Created",
     });
+
   } catch (error) {
     console.log(error.message);
     res.json({
@@ -171,6 +183,46 @@ export const changeBookingStatus = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const downloadInvoice = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+
+    const booking = await Booking.findById(
+      bookingId
+    );
+
+    if (!booking) {
+      return res.json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+
+    const car = await Car.findById(
+      booking.car
+    );
+
+    const user = await User.findById(
+      booking.user
+    );
+
+    const filePath = generateInvoice(
+      booking,
+      car,
+      user
+    );
+
+    return res.download(filePath);
+  } catch (error) {
+    console.log(error.message);
+
     res.json({
       success: false,
       message: error.message,

@@ -18,6 +18,7 @@ import Login from './components/Login'
 import { Toaster } from 'react-hot-toast';
 import { useAppContext } from './context/AppContext'
 import Wishlist from './pages/Wishlist'
+import ForgotPassword from './pages/ForgotPassword'
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
         <Route path='/cars' element={<Cars />} />
         <Route path='/my-bookings' element={<MyBookings />} />
         <Route path='/wishlist' element={<Wishlist />}/>
+        <Route path='/forgot-password' element={<ForgotPassword />}/>
 
         <Route path='/owner' element={<Layout />}>
           <Route index element={<Dashboard />} />

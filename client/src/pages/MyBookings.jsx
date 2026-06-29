@@ -143,6 +143,15 @@ const MyBookings = () => {
                     ? booking.createdAt.split('T')[0]
                     : ''}
                 </p>
+
+                <a
+                  href={`${import.meta.env.VITE_BASE_URL}/api/bookings/invoice/${booking._id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded-lg text-center hover:bg-primary-dull"
+                  >
+                  Download Invoice
+                </a>
               </div>
             </div>
           </motion.div>

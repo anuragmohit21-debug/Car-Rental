@@ -1,8 +1,10 @@
 import User from "../models/User.js";
-import Car from "../models/Car.js"; // 👈 ye import zaroor add karo
+import Car from "../models/Car.js"; 
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { sendBookingEmail } from "../utils/emailService.js";
+import { sendOtpEmail } from "../utils/emailService.js";
 
 const generateToken = (userId) => {
   return jwt.sign(userId, process.env.JWT_SECRET);
@@ -178,6 +180,152 @@ export const getWishlist = async (req, res) => {
   } catch (error) {
     console.log(error.message);
 
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const sendResetOtp = async (
+  req,
+  res
+) => {
+  try {
+    const { email } = req.body;
+
+    const user =
+      await User.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const otp = Math.floor(
+      100000 +
+        Math.random() * 900000
+    ).toString();
+
+    user.resetOtp = otp;
+    user.resetOtpExpire =
+      Date.now() + 10 * 60 * 1000;
+
+    await user.save();
+
+    await sendOtpEmail(
+      email,
+      otp
+    );
+
+    res.json({
+      success: true,
+      message:
+        "OTP sent successfully",
+    });
+  } catch (error) {
+    console.log(error.message);
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const verifyResetOtp = async (
+  req,
+  res
+) => {
+  try {
+    const { email, otp } = req.body;
+
+    const user =
+      await User.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (
+      user.resetOtp !== otp ||
+      user.resetOtpExpire < Date.now()
+    ) {
+      return res.json({
+        success: false,
+        message:
+          "Invalid or Expired OTP",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "OTP Verified",
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const resetPassword = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      email,
+      otp,
+      newPassword,
+    } = req.body;
+
+    const user =
+      await User.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (
+      user.resetOtp !== otp ||
+      user.resetOtpExpire < Date.now()
+    ) {
+      return res.json({
+        success: false,
+        message:
+          "Invalid or Expired OTP",
+      });
+    }
+
+    const hashedPassword =
+      await bcrypt.hash(
+        newPassword,
+        10
+      );
+
+    user.password =
+      hashedPassword;
+    user.resetOtp = "";
+    user.resetOtpExpire = null;
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message:
+        "Password Reset Successfully",
+    });
+  } catch (error) {
     res.json({
       success: false,
       message: error.message,

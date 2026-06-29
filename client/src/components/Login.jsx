@@ -89,6 +89,15 @@ const Login = () => {
             type='password'
             required
           />
+          <p
+  onClick={() => {
+    setShowLogin(false);
+    navigate("/forgot-password");
+  }}
+  className="text-primary cursor-pointer text-sm"
+>
+  Forgot Password?
+</p>
         </div>
 
         {state === "register" ? (

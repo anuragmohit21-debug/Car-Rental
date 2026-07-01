@@ -74,7 +74,11 @@ useEffect(() => {
   cars.length > 0 &&!isSearchData && applyFilter()
 }, [input, cars])
 
-// console.log(cars.length)
+
+  console.log(cars)
+  console.log(cars.length)
+  console.log(filteredCars)
+  console.log(filteredCars.length)
 
   return (
     <div>

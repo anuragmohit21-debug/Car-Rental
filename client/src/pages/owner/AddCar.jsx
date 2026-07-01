@@ -175,9 +175,15 @@ const AddCar = () => {
       className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'
     >
       <option value="">Select a category</option>
-      <option value="Sedan">Sedan</option>
+      <option value="Luxury Sports Sedan">Luxury Sports Sedan</option>
       <option value="SUV">SUV</option>
       <option value="Van">Van</option>
+      <option value="Luxury SUV">Luxury SUV</option>
+      <option value="Mid-Size SUV">Mid-Size SUV</option>
+      <option value="Compact SUV">Compact SUV</option>
+      <option value="Supercar">Supercar</option>
+      <option value="Off-Road SUV">Off-Road SUV</option>
+      <option value="Ultra Luxury Sedan">Ultra Luxury Sedan</option>
     </select>
   </div>
 </div>
@@ -210,7 +216,7 @@ const AddCar = () => {
       className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'
     >
       <option value="">Select a fuel type</option>
-      <option value="Gas">Gas</option>
+      
       <option value="Diesel">Diesel</option>
       <option value="Petrol">Petrol</option>
       <option value="Electric">Electric</option>
@@ -250,7 +256,11 @@ const AddCar = () => {
     <option value="New Delhi">New Delhi</option>
     <option value="Chennai">Chennai</option>
     <option value="Goa">Goa</option>
-    <option value="Bengalur">Bengalur</option>
+    <option value="Bangalore">Bangalore</option>
+    <option value="Hyderabad">Hyderabad</option>
+    <option value="Mumbai">Mumbai</option>
+    <option value="Pune">Pune</option>
+    <option value="Jaipur">Jaipur</option>
   </select>
 </div>
 

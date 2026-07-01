@@ -40,6 +40,17 @@ import car_image1 from "./car_image1.png"
 import car_image2 from "./car_image2.png"
 import car_image3 from "./car_image3.png"
 import car_image4 from "./car_image4.png"
+import car_image5 from "./car_image5.png"
+import car_image6 from "./car_image6.png"
+import car_image7 from "./car_image7.webp"
+import car_image8 from "./car_image8.webp"
+import car_image9 from "./car_image9.webp"
+import car_image10 from "./car_image10.webp"
+import car_image11 from "./car_image11.webp"
+import car_image12 from "./car_image12.webp"
+import car_image13 from "./car_image13.webp"
+import car_image14 from "./car_image14.webp"
+import car_image15 from "./car_image15.webp"
 
 export const cityList = ['New Delhi', 'Chennai', 'Goa', 'Bengalur']
 
@@ -85,7 +96,18 @@ export const assets = {
     user_profile,
     car_image2,
     car_image3,
-    car_image4
+    car_image4,
+    car_image5,
+    car_image6,
+    car_image7,
+    car_image8,
+    car_image9,
+    car_image10,
+    car_image11,
+    car_image12,
+    car_image13,
+    car_image14,
+    car_image15
 }
 
 export const menuLinks = [
@@ -168,16 +190,192 @@ export const dummyCarData = [
         "model": "Neo 6",
         "image": car_image4,
         "year": 2022,
-        "category": "Sedan",
+        "category": "Luxury Sports Sedan",
         "seating_capacity": 2,
         "fuel_type": "Diesel",
         "transmission": "Semi-Automatic",
         "pricePerDay": 20000,
-        "location": "Bengalur",
+        "location": "Bangalore",
         "description": "This is a mid-size luxury sedan produced by Toyota. The Corolla made its debut in 2008 as the first sedan ever produced by Toyota.",
         "isAvailable": true,
         "createdAt": "2026-04-17T06:15:47.318Z",
-    }
+    },
+    {
+  "_id": "68009c93a3f5fc6338ea7e35",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Rolls-Royce",
+  "model": "Phantom",
+  "image": car_image5,
+  "year": 2026,
+  "category": "Ultra Luxury Sedan",
+  "seating_capacity": 5,
+  "fuel_type": "Petrol",
+  "transmission": "Automatic",
+  "pricePerDay": 120000,
+  "location": "Mumbai",
+  "description": "The Rolls-Royce Phantom is an ultra-luxury sedan offering handcrafted interiors, unmatched comfort, and a world-class chauffeur experience.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e36",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Toyota",
+  "model": "Fortuner Legender",
+  "image": car_image6,
+  "year": 2020,
+  "category": "Luxury SUV",
+  "seating_capacity": 7,
+  "fuel_type": "Diesel",
+  "transmission": "Automatic",
+  "pricePerDay": 28000,
+  "location": "Chennai",
+  "description": "The Toyota Fortuner Legender is a premium SUV known for its reliability, powerful engine, and excellent highway and off-road performance.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e37",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Audi",
+  "model": "RS7 Sportback",
+  "image": car_image7,
+  "year": 2025,
+  "category": "Luxury Sports Sedan",
+  "seating_capacity": 5,
+  "fuel_type": "Petrol",
+  "transmission": "Manual",
+  "pricePerDay": 55000,
+  "location": "Bangalore",
+  "description": "The Audi RS7 Sportback delivers supercar performance with luxurious interiors and advanced technology.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e38",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Bugatti",
+  "model": "Chiron",
+  "image": car_image8,
+  "year": 2024,
+  "category": "Supercar",
+  "seating_capacity": 2,
+  "fuel_type": "Petrol",
+  "transmission": "Automatic",
+  "pricePerDay": 250000,
+  "location": "Pune",
+  "description": "The Bugatti Chiron is one of the world's fastest hypercars, combining extraordinary performance with exclusive luxury.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e39",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Mahindra",
+  "model": "Thar Roxx",
+  "image": car_image9,
+  "year": 2022,
+  "category": "Off-Road SUV",
+  "seating_capacity": 5,
+  "fuel_type": "Diesel",
+  "transmission": "Manual",
+  "pricePerDay": 18000,
+  "location": "Goa",
+  "description": "The Mahindra Thar Roxx is built for adventure lovers and offers outstanding off-road capabilities and rugged styling.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e40",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Land Rover",
+  "model": "Range Rover Sport",
+  "image": car_image10,
+  "year": 2026,
+  "category": "Luxury SUV",
+  "seating_capacity": 5,
+  "fuel_type": "Petrol",
+  "transmission": "Automatic",
+  "pricePerDay": 65000,
+  "location": "New Delhi",
+  "description": "The Range Rover Sport combines luxury, performance, and all-terrain capability with premium interiors.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e41",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "MG",
+  "model": "Hector Plus",
+  "image": car_image11,
+  "year": 2024,
+  "category": "Mid-Size SUV",
+  "seating_capacity": 7,
+  "fuel_type": "Hybrid",
+  "transmission": "Automatic",
+  "pricePerDay": 17000,
+  "location": "Hyderabad",
+  "description": "The MG Hector Plus offers spacious interiors, connected car technology, and premium comfort for families.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e42",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Mercedes-Benz",
+  "model": "G-Class",
+  "image": car_image12,
+  "year": 2025,
+  "category": "Luxury SUV",
+  "seating_capacity": 5,
+  "fuel_type": "Petrol",
+  "transmission": "Automatic",
+  "pricePerDay": 85000,
+  "location": "Mumbai",
+  "description": "The Mercedes-Benz G-Class is an iconic luxury SUV with exceptional off-road capabilities and premium craftsmanship.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e43",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Kia",
+  "model": "Seltos X-Line",
+  "image": car_image13,
+  "year": 2025,
+  "category": "Compact SUV",
+  "seating_capacity": 5,
+  "fuel_type": "Petrol",
+  "transmission": "Manual",
+  "pricePerDay": 16000,
+  "location": "Pune",
+  "description": "The Kia Seltos X-Line offers a sporty design, modern features, and excellent comfort for city driving.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e44",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Hyundai",
+  "model": "Creta SX(O)",
+  "image": car_image14,
+  "year": 2021,
+  "category": "Compact SUV",
+  "seating_capacity": 5,
+  "fuel_type": "Diesel",
+  "transmission": "Manual",
+  "pricePerDay": 15000,
+  "location": "Jaipur",
+  "description": "The Hyundai Creta SX(O) is a feature-packed SUV offering premium comfort, safety, and excellent fuel efficiency.",
+  "isAvailable": true
+},
+{
+  "_id": "68009c93a3f5fc6338ea7e45",
+  "owner": "67fe3467ed8a8fe17d0ba6e2",
+  "brand": "Lamborghini",
+  "model": "Huracán EVO",
+  "image": car_image15,
+  "year": 2025,
+  "category": "Supercar",
+  "seating_capacity": 2,
+  "fuel_type": "Hybrid",
+  "transmission": "Automatic",
+  "pricePerDay": 180000,
+  "location": "Mumbai",
+  "description": "The Lamborghini Huracán EVO is an exotic supercar delivering breathtaking performance, aggressive styling, and an unforgettable driving experience.",
+  "isAvailable": true
+}
 ];
 
 export const dummyMyBookingsData = [
@@ -228,7 +426,7 @@ export const dummyMyBookingsData = [
 ]
 
 export const dummyDashboardData = {
-    "totalCars": 4,
+    "totalCars": 15,
     "totalBookings": 2,
     "pendingBookings": 0,
     "completedBookings": 2,
